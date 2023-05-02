@@ -59,7 +59,7 @@ jobs:
      - uses: actions/upload-artifact@v3
        with:
          name: Coverage results
-         path: build/Coverage
+         path: .
 
   deployPages:
    needs: buildWebGL
