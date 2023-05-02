@@ -6,19 +6,22 @@ env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 jobs:
- unitTests:
-   name: Run Unit Tests
-   runs-on: ubuntu-latest
-   strategy:
-    fail-fast: false
-  steps:
-   name: run tests
-   run: |
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Unity
+        uses: game-ci/setup-unity@v1
+        with:
+          unity-version: 2020.3.16f1
+          modules: "unity.testrunner"
+
+      - name: Run tests
+        run: |
           xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
             /opt/unity/Editor/Unity \
             -runTests \
             -projectPath "$(pwd)" \
-            -logFile "$(pwd)/test-results.log"  
+            -logFile "$(pwd)/test-results.log" 
    
  buildWebGL:
    name: Build for WebGL 🖥️
