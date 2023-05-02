@@ -50,21 +50,21 @@ jobs:
          path: build/WebGL
 
      - name: Run Unity Tests
-        run: |
-          xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
-          unity \
-          -batchmode \
-          -nographics \
-          -logFile $(pwd)/test-results.log \
-          -projectPath $(pwd) \
-          -runTests \
-          -testPlatform playmode \
-          -testResults $(pwd)/test-results.xml
+       run: |
+         xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
+         unity \
+         -batchmode \
+         -nographics \
+         -logFile $(pwd)/test-results.log \
+         -projectPath $(pwd) \
+         -runTests \
+         -testPlatform playmode \
+         -testResults $(pwd)/test-results.xml
 
       - uses: actions/upload-artifact@v2
-        with:
-          name: test-results
-          path: test-results.xml
+       with:
+         name: test-results
+         path: test-results.xml
          
  deployPages:
    needs: buildWebGL
