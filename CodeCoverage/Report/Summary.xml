@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CoverageReport scope="Summary">
+  <Summary>
+    <Generatedon>5/2/2023 - 2:04:36 PM</Generatedon>
+    <Parser>OpenCoverParser</Parser>
+    <Assemblies>1</Assemblies>
+    <Classes>4</Classes>
+    <Files>4</Files>
+    <Coveredlines>38</Coveredlines>
+    <Uncoveredlines>38</Uncoveredlines>
+    <Coverablelines>76</Coverablelines>
+    <Totallines>161</Totallines>
+    <Linecoverage>50</Linecoverage>
+    <Coveredbranches>0</Coveredbranches>
+    <Totalbranches>0</Totalbranches>
+  </Summary>
+  <Coverage>
+    <Assembly name="Pong" classes="4" coverage="50" coveredlines="38" coverablelines="76" totallines="161" branchcoverage="" coveredbranches="0" totalbranches="0">
+      <Class name="Pong.GameHandler" coverage="90.6" coveredlines="29" coverablelines="32" totallines="58" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Pong.GameManager" coverage="0" coveredlines="0" coverablelines="12" totallines="36" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Pong.PaddleManager" coverage="31" coveredlines="9" coverablelines="29" totallines="52" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Pong.ScoreTrigger" coverage="0" coveredlines="0" coverablelines="3" totallines="15" branchcoverage="" coveredbranches="0" totalbranches="0" />
+    </Assembly>
+  </Coverage>
+</CoverageReport>
