@@ -6,23 +6,6 @@ env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup Unity
-        uses: game-ci/setup-unity@v1
-        with:
-          unity-version: 2020.3.16f1
-          modules: "unity.testrunner"
-
-      - name: Run tests
-        run: |
-          xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
-            /opt/unity/Editor/Unity \
-            -runTests \
-            -projectPath "$(pwd)" \
-            -logFile "$(pwd)/test-results.log" 
-  
   buildWebGL:
    name: Build for WebGL 🖥️
    runs-on: ubuntu-latest
@@ -57,14 +40,31 @@ jobs:
            Library-build-
            Library-
 
-     - uses: webbertakken/unity-builder@v2
-       with:
-         targetPlatform: WebGL
+    - name: Run Unity Tests
+      run: |
+        xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
+        unity \
+        -batchmode \
+        -nographics \
+        -logFile $(pwd)/test-results.log \
+        -projectPath $(pwd) \
+        -runTests \
+        -testPlatform playmode \
+        -testResults $(pwd)/test-results.xml
 
-     - uses: actions/upload-artifact@v3
-       with:
-         name: build-WebGL
-         path: build/WebGL
+    - uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: test-results.xml
+
+    - uses: webbertakken/unity-builder@v2
+      with:
+        targetPlatform: WebGL
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: build-WebGL
+        path: build/WebGL
          
   deployPages:
    needs: buildWebGL
