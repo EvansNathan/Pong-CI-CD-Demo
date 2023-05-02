@@ -6,65 +6,65 @@ env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 jobs:
-  buildWebGL:
-   name: Build for WebGL 🖥️
-   runs-on: ubuntu-latest
-   strategy:
-     fail-fast: false
-   steps:
-     - name: Checkout code
-       uses: actions/checkout@v3
+ buildWebGL:
+  name: Build for WebGL 🖥️
+  runs-on: ubuntu-latest
+  strategy:
+    fail-fast: false
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-     - name: Create LFS file list
-       run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+    - name: Create LFS file list
+      run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
 
-     - name: Restore LFS cache
-       uses: actions/cache@v3
-       id: lfs-cache
-       with:
-         path: .git/lfs
-         key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+    - name: Restore LFS cache
+      uses: actions/cache@v3
+      id: lfs-cache
+      with:
+        path: .git/lfs
+        key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
 
-     - name: Git LFS Pull
-       run: |
-         git lfs pull
-         git add .
-         git reset --hard
-
-     - name: Restore Library cache
-       uses: actions/cache@v3
-       with:
-         path: Library
-         key: Library-build-WebGL
-         restore-keys: |
-           Library-build-
-           Library-
-
-    - name: Run Unity Tests
+    - name: Git LFS Pull
       run: |
-        xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
-        unity \
-        -batchmode \
-        -nographics \
-        -logFile $(pwd)/test-results.log \
-        -projectPath $(pwd) \
-        -runTests \
-        -testPlatform playmode \
-        -testResults $(pwd)/test-results.xml
+        git lfs pull
+        git add .
+        git reset --hard
 
-    - uses: actions/upload-artifact@v2
+    - name: Restore Library cache
+      uses: actions/cache@v3
       with:
-        name: test-results
-        path: test-results.xml
+        path: Library
+        key: Library-build-WebGL
+        restore-keys: |
+          Library-build-
+          Library-
 
-    - uses: webbertakken/unity-builder@v2
-      with:
-        targetPlatform: WebGL
+  - name: Run Unity Tests
+    run: |
+      xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
+      unity \
+      -batchmode \
+      -nographics \
+      -logFile $(pwd)/test-results.log \
+      -projectPath $(pwd) \
+      -runTests \
+      -testPlatform playmode \
+      -testResults $(pwd)/test-results.xml
 
-    - uses: actions/upload-artifact@v3
-      with:
-        name: build-WebGL
-        path: build/WebGL
+  - uses: actions/upload-artifact@v2
+    with:
+      name: test-results
+      path: test-results.xml
+
+  - uses: webbertakken/unity-builder@v2
+    with:
+      targetPlatform: WebGL
+
+  - uses: actions/upload-artifact@v3
+    with:
+      name: build-WebGL
+      path: build/WebGL
          
   deployPages:
    needs: buildWebGL
