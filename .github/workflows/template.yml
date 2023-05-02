@@ -5,7 +5,15 @@ on: push
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
-jobs:         
+jobs:
+ unitTests:
+   run: |
+          xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
+            /opt/unity/Editor/Unity \
+            -runTests \
+            -projectPath "$(pwd)" \
+            -logFile "$(pwd)/test-results.log"  
+   
  buildWebGL:
    name: Build for WebGL 🖥️
    runs-on: ubuntu-latest
