@@ -77,6 +77,6 @@ jobs:
          BUTLER_CREDENTIALS: ${{ secrets.ITCH_IO_API_KEY }}
          CHANNEL: HTML
          ITCH_GAME: cicd-pong
-         ITCH_USER: Banjo_Pancake
+         ITCH_USER: banjo-pancake
          BRANCH: itch-io
          PACKAGE: build/WebGL
