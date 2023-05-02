@@ -59,7 +59,7 @@ jobs:
      - uses: actions/upload-artifact@v2
        with:
          name: Coverage results
-         path: ${{ steps.myTestStep.outputs.coveragePath }}
+         path: build/Coverage
 
      - uses: actions/upload-artifact@v2
        with:
