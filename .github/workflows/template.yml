@@ -57,6 +57,12 @@ jobs:
          test-platform: editmode
 
      - uses: actions/upload-artifact@v2
+         if: always()
+       with:
+         name: Coverage results
+         path: ${{ steps.myTestStep.outputs.coveragePath }}
+
+     - uses: actions/upload-artifact@v2
        with:
          name: build-WebGL
          path: build/WebGL

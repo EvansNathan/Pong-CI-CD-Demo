@@ -7,7 +7,7 @@ namespace Testing.EditMode
     public class GameHandlerTests
     {
         private GameHandler handler = new GameHandler();
-        
+
         [Test]
         public void CreateBall()
         {
@@ -41,6 +41,14 @@ namespace Testing.EditMode
         }
         
         [Test]
+        public void CheckPaddlePrefab()
+        {
+            var paddle = handler.PaddlePrefab;
+            
+            Assert.AreNotEqual(paddle, null);
+        }
+        
+        [Test]
         public void CreateLeftPaddle()
         {
             var (left, right) = handler.CreatePaddles();
@@ -56,6 +64,28 @@ namespace Testing.EditMode
             
             Assert.AreEqual(right.transform.position, new Vector3(8, 0, 0));
             Assert.AreEqual(right.GetComponent<PaddleManager>().isLeft, false);
+        }
+        
+        [Test]
+        public void TestMoveUp()
+        {
+            var (left, right) = handler.CreatePaddles();
+
+            var curPosY = left.transform.position.y;
+            left.GetComponent<PaddleManager>().MoveUp();
+            
+            Assert.AreEqual(left.transform.position.y > curPosY, true);
+        }
+        
+        [Test]
+        public void TestMoveDown()
+        {
+            var (left, right) = handler.CreatePaddles();
+
+            var curPosY = left.transform.position.y;
+            left.GetComponent<PaddleManager>().MoveDown();
+            
+            Assert.AreEqual(left.transform.position.y < curPosY, true);
         }
     }
 }
