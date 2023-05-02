@@ -5,7 +5,7 @@ on: push
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
-jobs:
+jobs:         
  buildWebGL:
    name: Build for WebGL 🖥️
    runs-on: ubuntu-latest
@@ -18,55 +18,55 @@ jobs:
      - name: Create LFS file list
        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
 
-    - name: Restore LFS cache
-      uses: actions/cache@v3
-      id: lfs-cache
-      with:
-        path: .git/lfs
-        key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+     - name: Restore LFS cache
+       uses: actions/cache@v3
+       id: lfs-cache
+       with:
+         path: .git/lfs
+         key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
 
-    - name: Git LFS Pull
-      run: |
-        git lfs pull
-        git add .
-        git reset --hard
+     - name: Git LFS Pull
+       run: |
+         git lfs pull
+         git add .
+         git reset --hard
 
-    - name: Restore Library cache
-      uses: actions/cache@v3
-      with:
-        path: Library
-        key: Library-build-WebGL
-        restore-keys: |
-          Library-build-
-          Library-
+     - name: Restore Library cache
+       uses: actions/cache@v3
+       with:
+         path: Library
+         key: Library-build-WebGL
+         restore-keys: |
+           Library-build-
+           Library-
 
-  - name: Run Unity Tests
-    run: |
-      xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
-      unity \
-      -batchmode \
-      -nographics \
-      -logFile $(pwd)/test-results.log \
-      -projectPath $(pwd) \
-      -runTests \
-      -testPlatform playmode \
-      -testResults $(pwd)/test-results.xml
+     - uses: webbertakken/unity-builder@v2
+       with:
+         targetPlatform: WebGL
 
-  - uses: actions/upload-artifact@v2
-    with:
-      name: test-results
-      path: test-results.xml
+     - uses: actions/upload-artifact@v3
+       with:
+         name: build-WebGL
+         path: build/WebGL
 
-  - uses: webbertakken/unity-builder@v2
-    with:
-      targetPlatform: WebGL
+     - name: Run Unity Tests
+        run: |
+          xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
+          unity \
+          -batchmode \
+          -nographics \
+          -logFile $(pwd)/test-results.log \
+          -projectPath $(pwd) \
+          -runTests \
+          -testPlatform playmode \
+          -testResults $(pwd)/test-results.xml
 
-  - uses: actions/upload-artifact@v3
-    with:
-      name: build-WebGL
-      path: build/WebGL
+      - uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: test-results.xml
          
-  deployPages:
+ deployPages:
    needs: buildWebGL
    name: Deploy to Itch.io 🚀
    runs-on: ubuntu-latest
@@ -93,7 +93,7 @@ jobs:
        env:
          BUTLER_CREDENTIALS: ${{ secrets.ITCH_IO_API_KEY }}
          CHANNEL: HTML
-         ITCH_GAME: cicd-pong
-         ITCH_USER: banjo-pancake
+         ITCH_GAME: YOUR-ITCH-GAME-NAME
+         ITCH_USER: YOUR-ITCH-USER-NAME
          BRANCH: itch-io
          PACKAGE: build/WebGL
