@@ -78,14 +78,27 @@ namespace Testing.EditMode
         }
         
         [Test]
-        public void TestMoveDown()
+        public void TestMoveUpTop()
         {
             var (left, right) = handler.CreatePaddles();
 
+            left.transform.position += new Vector3(0, 4, 0);
+            var curPosY = left.transform.position.y;
+            left.GetComponent<PaddleManager>().MoveUp();
+            
+            Assert.AreEqual(left.transform.position.y == 4f, true);
+        }
+        
+        [Test]
+        public void TestMoveDownBottom()
+        {
+            var (left, right) = handler.CreatePaddles();
+
+            left.transform.position += new Vector3(0, -4, 0);
             var curPosY = left.transform.position.y;
             left.GetComponent<PaddleManager>().MoveDown();
             
-            Assert.AreEqual(left.transform.position.y < curPosY, true);
+            Assert.AreEqual(left.transform.position.y == -4f, true);
         }
     }
 }
